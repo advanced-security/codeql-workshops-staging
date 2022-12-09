@@ -1,0 +1,49 @@
+[T 14:04:36 86591] CodeQL CLI version 2.11.5
+[T 14:04:36 86591] Initializing tracer.
+[T 14:04:36 86591] Initialising tags...
+[T 14:04:36 86591] ID set to 000000000001523F_0000000000000001 (parent root)
+[T 14:04:36 86591] Initializing tracer.
+[T 14:04:36 86591] Initialising tags...
+[T 14:04:36 86591] ID set to 000000000001523F_0000000000000002 (parent root)
+[T 14:04:36 86591] Warning: SEMMLE_EXEC and SEMMLE_EXECP not set. Falling back to path lookup on argv[0].
+[T 14:04:36 86591] ==== Candidate to intercept: /Users/hohn/local/osx64-2.11.5/codeql/tools/osx64/runner-osx (canonical: /Users/hohn/local/osx64-2.11.5/codeql/tools/osx64/runner-osx) ====
+[T 14:04:36 86591] Executing the following tracer actions:
+[T 14:04:36 86591] Tracer actions:
+[T 14:04:36 86591] pre_invocations(0)
+[T 14:04:36 86591] post_invocations(0)
+[T 14:04:36 86591] trace_languages(1): [go]
+[T 14:04:36 86593] Attempting to switch stdout/stderr to 3...
+/Users/hohn/local/codeql-workshops-staging/go/codeql-go-sqli/go-sqli-a9f3f19/working/copy-root/000001F5/bin/sh.semmle.0001523F.slice.x86_64: replacing existing signature
+[T 14:04:42 86591] Initializing tracer.
+[T 14:04:42 86591] Initialising tags...
+[T 14:04:42 86591] ID set to 000000000001523F_0000000000000003 (parent 000000000001523F_0000000000000002)
+[T 14:04:42 86591] ==== Candidate to intercept: /Users/hohn/local/osx64-2.11.5/codeql/go/tools/autobuild.sh (canonical: /Users/hohn/local/osx64-2.11.5/codeql/go/tools/autobuild.sh) ====
+[T 14:04:42 86591] Executing the following tracer actions:
+[T 14:04:42 86591] Tracer actions:
+[T 14:04:42 86591] pre_invocations(0)
+[T 14:04:42 86591] post_invocations(0)
+[T 14:04:42 86591] trace_languages(1): [go]
+[T 14:04:42 86608] Attempting to switch stdout/stderr to 3...
+/Users/hohn/local/codeql-workshops-staging/go/codeql-go-sqli/go-sqli-a9f3f19/working/copy-root/000001F5/bin/bash.semmle.0001523F.slice.x86_64: replacing existing signature
+[T 14:04:43 86591] Initializing tracer.
+[T 14:04:43 86591] Initialising tags...
+[T 14:04:43 86591] ID set to 000000000001523F_0000000000000004 (parent 000000000001523F_0000000000000003)
+[T 14:04:43 86591] ==== Candidate to intercept: /bin/bash (canonical: /bin/bash) ====
+[T 14:04:43 86591] Executing the following tracer actions:
+[T 14:04:43 86591] Tracer actions:
+[T 14:04:43 86591] pre_invocations(0)
+[T 14:04:43 86591] post_invocations(0)
+[T 14:04:43 86591] trace_languages(1): [go]
+[T 14:04:43 86620] Attempting to switch stdout/stderr to 3...
+[T 14:04:43 86619] Initializing tracer.
+[T 14:04:43 86619] Initialising tags...
+[T 14:04:43 86619] ID set to 000000000001525B_0000000000000001 (parent 000000000001523F_0000000000000004)
+[T 14:04:43 86619] ==== Candidate to intercept: /Users/hohn/local/osx64-2.11.5/codeql/go/tools/osx64/go-autobuilder (canonical: /Users/hohn/local/osx64-2.11.5/codeql/go/tools/osx64/go-autobuilder) ====
+[T 14:04:43 86619] Lua: === Intercepted call to /users/hohn/local/osx64-2.11.5/codeql/go/tools/osx64/go-autobuilder ===
+[T 14:04:43 86619] Lua: Disabling tracing for language go.
+[T 14:04:43 86619] Executing the following tracer actions:
+[T 14:04:43 86619] Tracer actions:
+[T 14:04:43 86619] pre_invocations(0)
+[T 14:04:43 86619] post_invocations(0)
+[T 14:04:43 86619] trace_languages(0): []
+[T 14:04:43 86619] Disabling tracing for this command.

@@ -45,23 +45,21 @@ This workshops will provide:
 To run CodeQL queries on dotnet/coreclr, follow these steps:
 
 1. Install the Visual Studio Code IDE.
-1. Download and install the [CodeQL extension for Visual Studio Code](https://help.semmle.com/codeql/codeql-for-vscode.html). Full setup instructions are [here](https://help.semmle.com/codeql/codeql-for-vscode/procedures/setting-up.html).
-1. [Set up the starter workspace](https://help.semmle.com/codeql/codeql-for-vscode/procedures/setting-up.html#using-the-starter-workspace).
-    - **Important**: Don't forget to `git clone --recursive` or `git submodule update --init --remote`, so that you obtain the standard query libraries.
-1. Open the starter workspace: File > Open Workspace > Browse to `vscode-codeql-starter/vscode-codeql-starter.code-workspace`.
-1. Download the [dotnet/coreclr](http://downloads.lgtm.com/snapshots/cpp/dotnet/coreclr/dotnet_coreclr_fbe0c77.zip).
-1. Unzip the database.
+1. Download and install the [CodeQL extension for Visual Studio Code](https://codeql.github.com/)
+1. Create a folder and open it with Visual Studio Code.
+1. Download the [dotnet/coreclr database](https://drive.google.com/file/d/18vde3OibbaBpD3PaERWxju7HiY5Z4fwi/view?usp=sharing).
 1. Import the unzipped database into Visual Studio Code:
     - Click the **CodeQL** icon in the left sidebar.
     - Place your mouse over **Databases**, and click the + sign that appears on the right.
-    - Choose the unzipped database directory on your filesystem.
+    - Choose the downloaded database on your filesystem.
+1. Create a new CodeQL pack using the command `codeql pack init workshop-queries` using the terminal in the created folder.
 1. Create a new file, name it `FormatStringInjection.ql`, save it under `codeql-custom-queries-cpp`.
 
 ## Documentation links
 If you get stuck, try searching our documentation and blog posts for help and ideas. Below are a few links to help you get started:
-- [Learning CodeQL](https://help.semmle.com/QL/learn-ql)
-- [Learning CodeQL for C/C++](https://help.semmle.com/QL/learn-ql/cpp/ql-for-cpp.html)
-- [Using the CodeQL extension for VS Code](https://help.semmle.com/codeql/codeql-for-vscode.html)
+- [Learning CodeQL](https://codeql.github.com/docs/writing-codeql-queries/)
+- [Learning CodeQL for C/C++](https://codeql.github.com/docs/codeql-language-guides/codeql-for-cpp/)
+- [Using the CodeQL extension for VS Code](https://codeql.github.com/docs/codeql-for-visual-studio-code/)
 
 ## Workshop
 The workshop is split into several steps. You can write one query per step, or work with a single query that you refine at each step. Each step has a **hint** that describes useful classes and predicates in the CodeQL standard libraries for C/C++. You can explore these in your IDE using the autocomplete suggestions (Ctrl + Space) and the jump-to-definition command (F12).

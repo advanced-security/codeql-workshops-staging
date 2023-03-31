@@ -53,7 +53,7 @@ To run CodeQL queries on dotnet/coreclr, follow these steps:
     - Place your mouse over **Databases**, and click the + sign that appears on the right.
     - Choose the downloaded database on your filesystem.
 1. Create a new CodeQL pack using the command `codeql pack init workshop-queries` using the terminal in the created folder.
-1. Create a new file, name it `FormatStringInjection.ql`, save it under `codeql-custom-queries-cpp`.
+1. Create a new file, name it `FormatStringInjection.ql`, save it under `workshop-queries`.
 
 ## Documentation links
 If you get stuck, try searching our documentation and blog posts for help and ideas. Below are a few links to help you get started:

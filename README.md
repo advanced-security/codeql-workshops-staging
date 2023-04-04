@@ -72,13 +72,21 @@ line tools.  See the individual project's instructions, or
 
 # Contributing
 New tutorials should use the `language/project/content` structure to allow for
-expansion.  Primary focus should be on learning and explaining CodeQL and the
-content should cover at least these items:
+expansion.  
+
+This is a **staging** area, so the rules are relaxed:
+- If you have bare content that you have used, it's good enough.
+- If you have a writeup that you think you will use, it's good enough.
+- Err on the side of too little content; maybe someone else will use it as a starting point.
+- Don't wait for PR's when you're adding new content, or making minor changes.
+
+While evolving content, the goal should be learning and explaining CodeQL and
+the content should eventually cover these items:
 1. A high-level problem description
 2. The specific parts of the original source code to be analyzed 
 3. Descriptions of the CodeQL predicates/classes developed
 4. A description of the final query
-
+     
 
 
 

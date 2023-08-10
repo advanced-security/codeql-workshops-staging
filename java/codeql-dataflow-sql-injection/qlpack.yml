@@ -1,3 +1,4 @@
 name: codeql-workshop/java-sql-injection
 version: 0.0.0
-libraryPathDependencies: codeql-java
+dependencies:
+    codeql/java-all: "*"

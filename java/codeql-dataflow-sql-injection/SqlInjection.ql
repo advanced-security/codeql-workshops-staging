@@ -2,18 +2,16 @@
  * @name SQLI Vulnerability
  * @description Using untrusted strings in a sql query allows sql injection attacks.
  * @kind path-problem
- * @id cpp/SQLIVulnerable
+ * @id SQLIVulnerable
  * @problem.severity warning
  */
 
 import java
 import semmle.code.java.dataflow.TaintTracking
-import DataFlow::PathGraph
 
-class SqliFlowConfig extends TaintTracking::Configuration {
-    SqliFlowConfig() { this = "SqliFlow" }
+module SqliFlowConfig implements DataFlow::ConfigSig {
 
-    override predicate isSource(DataFlow::Node source) {
+    predicate isSource(DataFlow::Node source) {
         // System.console().readLine();
         exists(Call read |
             read.getCallee().getName() = "readLine" and
@@ -21,16 +19,16 @@ class SqliFlowConfig extends TaintTracking::Configuration {
         )
     }
 
-    override predicate isSanitizer(DataFlow::Node sanitizer) { none() }
+    predicate isBarrier(DataFlow::Node sanitizer) { none() }
 
-    override predicate isAdditionalTaintStep(DataFlow::Node into, DataFlow::Node out) {
+    predicate isAdditionalFlowStep(DataFlow::Node into, DataFlow::Node out) {
         // Extra taint step
         //     String.format("INSERT INTO users VALUES (%d, '%s')", id, info);
         // Not needed here, but may be needed for larger libraries.
         none()
     }
 
-    override predicate isSink(DataFlow::Node sink) {
+    predicate isSink(DataFlow::Node sink) {
         // conn.createStatement().executeUpdate(query);
         exists(Call exec |
             exec.getCallee().getName() = "executeUpdate" and
@@ -39,6 +37,9 @@ class SqliFlowConfig extends TaintTracking::Configuration {
     }
 }
 
-from SqliFlowConfig conf, DataFlow::PathNode source, DataFlow::PathNode sink
-where conf.hasFlowPath(source, sink)
+module MyDataFlow = TaintTracking::Global<SqliFlowConfig>;
+import MyDataFlow::PathGraph
+
+from MyDataFlow::PathNode source, MyDataFlow::PathNode sink
+where MyDataFlow::flowPath(source, sink)
 select sink, source, sink, "Possible SQL injection"

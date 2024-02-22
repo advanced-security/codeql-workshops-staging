@@ -1,3 +1,4 @@
 name: codeql-workshop/cpp-sql-injection
 version: 0.0.0
-libraryPathDependencies: codeql-cpp
+dependencies:
+  codeql/cpp-all: "*"

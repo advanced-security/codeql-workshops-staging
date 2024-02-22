@@ -2,18 +2,16 @@
  * @name SQLI Vulnerability
  * @description Using untrusted strings in a sql query allows sql injection attacks.
  * @kind path-problem
- * @id cpp/SQLIVulnerable
+ * @id cpp/sqlivulnerable
  * @problem.severity warning
  */
 
 import cpp
-import semmle.code.cpp.dataflow.TaintTracking
-import DataFlow::PathGraph
+import semmle.code.cpp.dataflow.new.TaintTracking
 
-class SqliFlowConfig extends TaintTracking::Configuration {
-    SqliFlowConfig() { this = "SqliFlow" }
+module SqliFlowConfig implements DataFlow::ConfigSig {
 
-    override predicate isSource(DataFlow::Node source) {
+    predicate isSource(DataFlow::Node source) {
         // count = read(STDIN_FILENO, buf, BUFSIZE);
         exists(FunctionCall read |
             read.getTarget().getName() = "read" and
@@ -21,9 +19,9 @@ class SqliFlowConfig extends TaintTracking::Configuration {
         )
     }
 
-    override predicate isSanitizer(DataFlow::Node sanitizer) { none() }
+    predicate isBarrier(DataFlow::Node sanitizer) { none() }
 
-    override predicate isAdditionalTaintStep(DataFlow::Node into, DataFlow::Node out) {
+    predicate isAdditionalFlowStep(DataFlow::Node into, DataFlow::Node out) {
         // Extra taint step
         //     snprintf(query, bufsize, "INSERT INTO users VALUES (%d, '%s')", id, info);
         // But snprintf is a macro on mac os.  The actual function's name is
@@ -39,7 +37,7 @@ class SqliFlowConfig extends TaintTracking::Configuration {
         )
     }
 
-    override predicate isSink(DataFlow::Node sink) {
+    predicate isSink(DataFlow::Node sink) {
         // rc = sqlite3_exec(db, query, NULL, 0, &zErrMsg);
         exists(FunctionCall exec |
             exec.getTarget().getName() = "sqlite3_exec" and
@@ -48,6 +46,9 @@ class SqliFlowConfig extends TaintTracking::Configuration {
     }
 }
 
-from SqliFlowConfig conf, DataFlow::PathNode source, DataFlow::PathNode sink
-where conf.hasFlowPath(source, sink)
+module MyFlow = TaintTracking::Global<SqliFlowConfig>;
+import MyFlow::PathGraph
+
+from  MyFlow::PathNode source, MyFlow::PathNode sink
+where MyFlow::flowPath(source, sink)
 select sink, source, sink, "Possible SQL injection"

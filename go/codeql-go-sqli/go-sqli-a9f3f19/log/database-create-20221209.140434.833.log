@@ -1,0 +1,544 @@
+[2022-12-09 14:04:34] This is codeql database create --language=go -s . -j 8 -v /Users/hohn/local/codeql-workshops-staging/go/codeql-go-sqli/go-sqli-a9f3f19
+[2022-12-09 14:04:34] Log file was started late.
+[2022-12-09 14:04:34] [PROGRESS] database create> Initializing database at /Users/hohn/local/codeql-workshops-staging/go/codeql-go-sqli/go-sqli-a9f3f19.
+[2022-12-09 14:04:34] Running plumbing command: codeql database init --language=go --source-root=/Users/hohn/local/codeql-workshops-staging/go/codeql-go-sqli --allow-missing-source-root=false --allow-already-existing -- /Users/hohn/local/codeql-workshops-staging/go/codeql-go-sqli/go-sqli-a9f3f19
+[2022-12-09 14:04:34] Calling plumbing command: codeql resolve languages --format=json
+[2022-12-09 14:04:34] [DETAILS] resolve languages> Scanning for [codeql-extractor.yml] from /Users/hohn/local/osx64-2.11.5/codeql/.codeqlmanifest.json
+[2022-12-09 14:04:34] [DETAILS] resolve languages> Parsing /Users/hohn/local/osx64-2.11.5/codeql/go/codeql-extractor.yml.
+[2022-12-09 14:04:34] [DETAILS] resolve languages> Parsing /Users/hohn/local/osx64-2.11.5/codeql/python/codeql-extractor.yml.
+[2022-12-09 14:04:34] [DETAILS] resolve languages> Parsing /Users/hohn/local/osx64-2.11.5/codeql/java/codeql-extractor.yml.
+[2022-12-09 14:04:34] [DETAILS] resolve languages> Parsing /Users/hohn/local/osx64-2.11.5/codeql/html/codeql-extractor.yml.
+[2022-12-09 14:04:34] [DETAILS] resolve languages> Parsing /Users/hohn/local/osx64-2.11.5/codeql/xml/codeql-extractor.yml.
+[2022-12-09 14:04:34] [DETAILS] resolve languages> Parsing /Users/hohn/local/osx64-2.11.5/codeql/properties/codeql-extractor.yml.
+[2022-12-09 14:04:34] [DETAILS] resolve languages> Parsing /Users/hohn/local/osx64-2.11.5/codeql/cpp/codeql-extractor.yml.
+[2022-12-09 14:04:34] [DETAILS] resolve languages> Parsing /Users/hohn/local/osx64-2.11.5/codeql/csv/codeql-extractor.yml.
+[2022-12-09 14:04:34] [DETAILS] resolve languages> Parsing /Users/hohn/local/osx64-2.11.5/codeql/csharp/codeql-extractor.yml.
+[2022-12-09 14:04:34] [DETAILS] resolve languages> Parsing /Users/hohn/local/osx64-2.11.5/codeql/javascript/codeql-extractor.yml.
+[2022-12-09 14:04:34] [DETAILS] resolve languages> Parsing /Users/hohn/local/osx64-2.11.5/codeql/ruby/codeql-extractor.yml.
+[2022-12-09 14:04:35] Plumbing command codeql resolve languages completed:
+                      {
+                        "extractors" : {
+                          "go" : [
+                            {
+                              "extractor_root" : "/Users/hohn/local/osx64-2.11.5/codeql/go"
+                            }
+                          ],
+                          "python" : [
+                            {
+                              "extractor_root" : "/Users/hohn/local/osx64-2.11.5/codeql/python"
+                            }
+                          ],
+                          "java" : [
+                            {
+                              "extractor_root" : "/Users/hohn/local/osx64-2.11.5/codeql/java",
+                              "extractor_options" : {
+                                "exclude" : {
+                                  "title" : "A glob excluding files from analysis.",
+                                  "description" : "A glob indicating what files to exclude from the analysis.\n",
+                                  "type" : "string"
+                                }
+                              }
+                            }
+                          ],
+                          "html" : [
+                            {
+                              "extractor_root" : "/Users/hohn/local/osx64-2.11.5/codeql/html"
+                            }
+                          ],
+                          "xml" : [
+                            {
+                              "extractor_root" : "/Users/hohn/local/osx64-2.11.5/codeql/xml"
+                            }
+                          ],
+                          "properties" : [
+                            {
+                              "extractor_root" : "/Users/hohn/local/osx64-2.11.5/codeql/properties"
+                            }
+                          ],
+                          "cpp" : [
+                            {
+                              "extractor_root" : "/Users/hohn/local/osx64-2.11.5/codeql/cpp"
+                            }
+                          ],
+                          "csv" : [
+                            {
+                              "extractor_root" : "/Users/hohn/local/osx64-2.11.5/codeql/csv"
+                            }
+                          ],
+                          "csharp" : [
+                            {
+                              "extractor_root" : "/Users/hohn/local/osx64-2.11.5/codeql/csharp",
+                              "extractor_options" : {
+                                "trap" : {
+                                  "title" : "Options pertaining to TRAP.",
+                                  "description" : "Options pertaining to TRAP.",
+                                  "type" : "object",
+                                  "properties" : {
+                                    "compression" : {
+                                      "title" : "Controls compression for the TRAP files written by the extractor.",
+                                      "description" : "This option is only intended for use in debugging the extractor. Accepted values are 'brotli' (the default, to write brotli-compressed TRAP), 'gzip', and 'none' (to write uncompressed TRAP).\n",
+                                      "type" : "string",
+                                      "pattern" : "^(none|gzip|brotli)$"
+                                    }
+                                  }
+                                },
+                                "buildless" : {
+                                  "title" : "Whether to use buildless (standalone) extraction.",
+                                  "description" : "A value indicating, which type of extraction the autobuilder should perform. If 'true', then the standalone extractor will be used, otherwise tracing extraction will be performed. The default is 'false'. Note that buildless extraction will generally yield less accurate analysis results, and should only be used in cases where it is not possible to build the code (for example if it uses inaccessible dependencies).\n",
+                                  "type" : "string",
+                                  "pattern" : "^(false|true)$"
+                                },
+                                "cil" : {
+                                  "title" : "Whether to enable CIL extraction.",
+                                  "description" : "A value indicating, whether CIL extraction should be enabled. The default is 'true'.\n",
+                                  "type" : "string",
+                                  "pattern" : "^(false|true)$"
+                                }
+                              }
+                            }
+                          ],
+                          "javascript" : [
+                            {
+                              "extractor_root" : "/Users/hohn/local/osx64-2.11.5/codeql/javascript",
+                              "extractor_options" : { }
+                            }
+                          ],
+                          "ruby" : [
+                            {
+                              "extractor_root" : "/Users/hohn/local/osx64-2.11.5/codeql/ruby"
+                            }
+                          ]
+                        }
+                      }
+[2022-12-09 14:04:35] [PROGRESS] database init> Calculating baseline information in /Users/hohn/local/codeql-workshops-staging/go/codeql-go-sqli
+[2022-12-09 14:04:35] [PROGRESS] database init> Resolving extractor go.
+[2022-12-09 14:04:35] [DETAILS] database init> Found candidate extractor root for go: /Users/hohn/local/osx64-2.11.5/codeql/go.
+[2022-12-09 14:04:35] [PROGRESS] database init> Successfully loaded extractor Go (go) from /Users/hohn/local/osx64-2.11.5/codeql/go.
+[2022-12-09 14:04:35] [PROGRESS] database init> Created skeleton CodeQL database at /Users/hohn/local/codeql-workshops-staging/go/codeql-go-sqli/go-sqli-a9f3f19. This in-progress database is ready to be populated by an extractor.
+[2022-12-09 14:04:35] Plumbing command codeql database init completed.
+[2022-12-09 14:04:35] Using autobuild script /Users/hohn/local/osx64-2.11.5/codeql/go/tools/autobuild.sh.
+[2022-12-09 14:04:35] [DETAILS] database create> Detected autobuild command for Go: /Users/hohn/local/osx64-2.11.5/codeql/go/tools/autobuild.sh.
+[2022-12-09 14:04:35] [PROGRESS] database create> Running build command: [/Users/hohn/local/osx64-2.11.5/codeql/go/tools/autobuild.sh]
+[2022-12-09 14:04:35] Running plumbing command: codeql database trace-command --threads=8 --working-dir=/Users/hohn/local/codeql-workshops-staging/go/codeql-go-sqli --index-traceless-dbs --no-db-cluster -- /Users/hohn/local/codeql-workshops-staging/go/codeql-go-sqli/go-sqli-a9f3f19 /Users/hohn/local/osx64-2.11.5/codeql/go/tools/autobuild.sh
+[2022-12-09 14:04:35] [PROGRESS] database trace-command> Running command in /Users/hohn/local/codeql-workshops-staging/go/codeql-go-sqli: [/Users/hohn/local/osx64-2.11.5/codeql/go/tools/autobuild.sh]
+[2022-12-09 14:04:43] [build-stderr] 2022/12/09 14:04:43 Autobuilder was built with go1.19.3, environment has go1.19.2
+[2022-12-09 14:04:43] [build-stderr] 2022/12/09 14:04:43 LGTM_SRC is /Users/hohn/local/codeql-workshops-staging/go/codeql-go-sqli
+[2022-12-09 14:04:43] [build-stderr] 2022/12/09 14:04:43 Found go.mod, enabling go modules
+[2022-12-09 14:04:43] [build-stderr] 2022/12/09 14:04:43 We have run `go mod tidy -e` and it altered go.sum. You may wish to check these changes into version control. 
+[2022-12-09 14:04:43] [build-stderr] 2022/12/09 14:04:43 Unable to determine import path, as neither LGTM_INDEX_IMPORT_PATH nor GITHUB_REPOSITORY is set
+[2022-12-09 14:04:43] [build-stderr] 2022/12/09 14:04:43 Makefile found.
+[2022-12-09 14:04:43] [build-stderr] 2022/12/09 14:04:43 Trying build command make []
+[2022-12-09 14:04:43] [build-stdout] go build add-user.go
+[2022-12-09 14:04:54] [build-stderr] # command-line-arguments
+[2022-12-09 14:04:54] [build-stderr] ld: warning: object file (/var/folders/f8/swvhg5vj2nq__5d4v13r0jxr0000gn/T/go-link-2978832262/000012.o) was built for newer macOS version (13.0) than being linked (12.0)
+[2022-12-09 14:04:54] [build-stderr] ld: warning: object file (/var/folders/f8/swvhg5vj2nq__5d4v13r0jxr0000gn/T/go-link-2978832262/000014.o) was built for newer macOS version (13.0) than being linked (12.0)ld: warning: ld: warning: object file (/var/folders/f8/swvhg5vj2nq__5d4v13r0jxr0000gn/T/go-link-2978832262/000017.o) was built for newer macOS version (13.0) than being linked (12.0)ld: warning: ld: warning: object file (/var/folders/f8/swvhg5vj2nq__5d4v13r0jxr0000gn/T/go-link-2978832262/000016.o) was built for newer macOS version (13.0) than being linked (12.0)object file (/var/folders/f8/swvhg5vj2nq__5d4v13r0jxr0000gn/T/go-link-2978832262/000018.o) was built for newer macOS version (13.0) than being linked (12.0)
+[2022-12-09 14:04:54] [build-stderr] ld: warning: object file (/var/folders/f8/swvhg5vj2nq__5d4v13r0jxr0000gn/T/go-link-2978832262/000020.o) was built for newer macOS version (13.0) than being linked (12.0)
+[2022-12-09 14:04:54] [build-stderr] object file (/var/folders/f8/swvhg5vj2nq__5d4v13r0jxr0000gn/T/go-link-2978832262/000019.o) was built for newer macOS version (13.0) than being linked (12.0)
+[2022-12-09 14:04:54] [build-stderr] ld: warning: object file (/var/folders/f8/swvhg5vj2nq__5d4v13r0jxr0000gn/T/go-link-2978832262/000015.o) was built for newer macOS version (13.0) than being linked (12.0)
+[2022-12-09 14:04:54] [build-stderr] ld: warning: object file (/var/folders/f8/swvhg5vj2nq__5d4v13r0jxr0000gn/T/go-link-2978832262/000013.o) was built for newer macOS version (13.0) than being linked (12.0)
+[2022-12-09 14:04:54] [build-stderr] 2022/12/09 14:04:54 Dependencies are still not resolving after the build, continuing to install dependencies.
+[2022-12-09 14:04:54] [build-stderr] 2022/12/09 14:04:54 Installing dependencies using `go get -v ./...`.
+[2022-12-09 14:04:54] [build-stderr] 2022/12/09 14:04:54 Running extractor command '/Users/hohn/local/osx64-2.11.5/codeql/go/tools/osx64/go-extractor [./...]' from directory '/Users/hohn/local/codeql-workshops-staging/go/codeql-go-sqli'.
+[2022-12-09 14:04:55] [build-stderr] 2022/12/09 14:04:55 Build flags: ''; patterns: './...'
+[2022-12-09 14:04:55] [build-stderr] 2022/12/09 14:04:55 Running packages.Load.
+[2022-12-09 14:04:56] [build-stderr] 2022/12/09 14:04:56 Done running packages.Load.
+[2022-12-09 14:04:56] [build-stderr] 2022/12/09 14:04:56 Extracting universe scope.
+[2022-12-09 14:04:56] [build-stderr] 2022/12/09 14:04:56 Done extracting universe scope.
+[2022-12-09 14:04:56] [build-stderr] 2022/12/09 14:04:56 Processing package internal/goarch.
+[2022-12-09 14:04:56] [build-stderr] 2022/12/09 14:04:56 Extracting types for package internal/goarch.
+[2022-12-09 14:04:56] [build-stderr] 2022/12/09 14:04:56 Done extracting types for package internal/goarch.
+[2022-12-09 14:04:56] [build-stderr] 2022/12/09 14:04:56 Processing package unsafe.
+[2022-12-09 14:04:56] [build-stderr] 2022/12/09 14:04:56 Extracting types for package unsafe.
+[2022-12-09 14:04:56] [build-stderr] 2022/12/09 14:04:56 Done extracting types for package unsafe.
+[2022-12-09 14:04:56] [build-stderr] 2022/12/09 14:04:56 Processing package internal/unsafeheader.
+[2022-12-09 14:04:56] [build-stderr] 2022/12/09 14:04:56 Extracting types for package internal/unsafeheader.
+[2022-12-09 14:04:56] [build-stderr] 2022/12/09 14:04:56 Done extracting types for package internal/unsafeheader.
+[2022-12-09 14:04:56] [build-stderr] 2022/12/09 14:04:56 Processing package internal/abi.
+[2022-12-09 14:04:56] [build-stderr] 2022/12/09 14:04:56 Extracting types for package internal/abi.
+[2022-12-09 14:04:56] [build-stderr] 2022/12/09 14:04:56 Done extracting types for package internal/abi.
+[2022-12-09 14:04:56] [build-stderr] 2022/12/09 14:04:56 Processing package internal/cpu.
+[2022-12-09 14:04:56] [build-stderr] 2022/12/09 14:04:56 Extracting types for package internal/cpu.
+[2022-12-09 14:04:56] [build-stderr] 2022/12/09 14:04:56 Done extracting types for package internal/cpu.
+[2022-12-09 14:04:56] [build-stderr] 2022/12/09 14:04:56 Processing package internal/bytealg.
+[2022-12-09 14:04:56] [build-stderr] 2022/12/09 14:04:56 Extracting types for package internal/bytealg.
+[2022-12-09 14:04:56] [build-stderr] 2022/12/09 14:04:56 Done extracting types for package internal/bytealg.
+[2022-12-09 14:04:56] [build-stderr] 2022/12/09 14:04:56 Processing package internal/goexperiment.
+[2022-12-09 14:04:56] [build-stderr] 2022/12/09 14:04:56 Extracting types for package internal/goexperiment.
+[2022-12-09 14:04:56] [build-stderr] 2022/12/09 14:04:56 Done extracting types for package internal/goexperiment.
+[2022-12-09 14:04:56] [build-stderr] 2022/12/09 14:04:56 Processing package internal/goos.
+[2022-12-09 14:04:56] [build-stderr] 2022/12/09 14:04:56 Extracting types for package internal/goos.
+[2022-12-09 14:04:56] [build-stderr] 2022/12/09 14:04:56 Done extracting types for package internal/goos.
+[2022-12-09 14:04:56] [build-stderr] 2022/12/09 14:04:56 Processing package runtime/internal/atomic.
+[2022-12-09 14:04:56] [build-stderr] 2022/12/09 14:04:56 Extracting types for package runtime/internal/atomic.
+[2022-12-09 14:04:56] [build-stderr] 2022/12/09 14:04:56 Done extracting types for package runtime/internal/atomic.
+[2022-12-09 14:04:56] [build-stderr] 2022/12/09 14:04:56 Processing package runtime/internal/math.
+[2022-12-09 14:04:56] [build-stderr] 2022/12/09 14:04:56 Extracting types for package runtime/internal/math.
+[2022-12-09 14:04:56] [build-stderr] 2022/12/09 14:04:56 Done extracting types for package runtime/internal/math.
+[2022-12-09 14:04:56] [build-stderr] 2022/12/09 14:04:56 Processing package runtime/internal/sys.
+[2022-12-09 14:04:56] [build-stderr] 2022/12/09 14:04:56 Extracting types for package runtime/internal/sys.
+[2022-12-09 14:04:56] [build-stderr] 2022/12/09 14:04:56 Done extracting types for package runtime/internal/sys.
+[2022-12-09 14:04:56] [build-stderr] 2022/12/09 14:04:56 Processing package runtime.
+[2022-12-09 14:04:56] [build-stderr] 2022/12/09 14:04:56 Extracting types for package runtime.
+[2022-12-09 14:04:56] [build-stderr] 2022/12/09 14:04:56 Done extracting types for package runtime.
+[2022-12-09 14:04:56] [build-stderr] 2022/12/09 14:04:56 Processing package internal/reflectlite.
+[2022-12-09 14:04:56] [build-stderr] 2022/12/09 14:04:56 Extracting types for package internal/reflectlite.
+[2022-12-09 14:04:56] [build-stderr] 2022/12/09 14:04:56 Done extracting types for package internal/reflectlite.
+[2022-12-09 14:04:56] [build-stderr] 2022/12/09 14:04:56 Processing package errors.
+[2022-12-09 14:04:57] [build-stderr] 2022/12/09 14:04:57 Extracting types for package errors.
+[2022-12-09 14:04:57] [build-stderr] 2022/12/09 14:04:57 Done extracting types for package errors.
+[2022-12-09 14:04:57] [build-stderr] 2022/12/09 14:04:57 Processing package internal/race.
+[2022-12-09 14:04:57] [build-stderr] 2022/12/09 14:04:57 Extracting types for package internal/race.
+[2022-12-09 14:04:57] [build-stderr] 2022/12/09 14:04:57 Done extracting types for package internal/race.
+[2022-12-09 14:04:57] [build-stderr] 2022/12/09 14:04:57 Processing package sync/atomic.
+[2022-12-09 14:04:57] [build-stderr] 2022/12/09 14:04:57 Extracting types for package sync/atomic.
+[2022-12-09 14:04:57] [build-stderr] 2022/12/09 14:04:57 Done extracting types for package sync/atomic.
+[2022-12-09 14:04:57] [build-stderr] 2022/12/09 14:04:57 Processing package sync.
+[2022-12-09 14:04:57] [build-stderr] 2022/12/09 14:04:57 Extracting types for package sync.
+[2022-12-09 14:04:57] [build-stderr] 2022/12/09 14:04:57 Done extracting types for package sync.
+[2022-12-09 14:04:57] [build-stderr] 2022/12/09 14:04:57 Processing package internal/itoa.
+[2022-12-09 14:04:57] [build-stderr] 2022/12/09 14:04:57 Extracting types for package internal/itoa.
+[2022-12-09 14:04:57] [build-stderr] 2022/12/09 14:04:57 Done extracting types for package internal/itoa.
+[2022-12-09 14:04:57] [build-stderr] 2022/12/09 14:04:57 Processing package internal/oserror.
+[2022-12-09 14:04:57] [build-stderr] 2022/12/09 14:04:57 Extracting types for package internal/oserror.
+[2022-12-09 14:04:57] [build-stderr] 2022/12/09 14:04:57 Done extracting types for package internal/oserror.
+[2022-12-09 14:04:57] [build-stderr] 2022/12/09 14:04:57 Processing package syscall.
+[2022-12-09 14:04:57] [build-stderr] 2022/12/09 14:04:57 Extracting types for package syscall.
+[2022-12-09 14:04:57] [build-stderr] 2022/12/09 14:04:57 Done extracting types for package syscall.
+[2022-12-09 14:04:57] [build-stderr] 2022/12/09 14:04:57 Processing package time.
+[2022-12-09 14:04:57] [build-stderr] 2022/12/09 14:04:57 Extracting types for package time.
+[2022-12-09 14:04:57] [build-stderr] 2022/12/09 14:04:57 Done extracting types for package time.
+[2022-12-09 14:04:57] [build-stderr] 2022/12/09 14:04:57 Processing package context.
+[2022-12-09 14:04:57] [build-stderr] 2022/12/09 14:04:57 Extracting types for package context.
+[2022-12-09 14:04:57] [build-stderr] 2022/12/09 14:04:57 Done extracting types for package context.
+[2022-12-09 14:04:57] [build-stderr] 2022/12/09 14:04:57 Processing package math/bits.
+[2022-12-09 14:04:57] [build-stderr] 2022/12/09 14:04:57 Extracting types for package math/bits.
+[2022-12-09 14:04:57] [build-stderr] 2022/12/09 14:04:57 Done extracting types for package math/bits.
+[2022-12-09 14:04:57] [build-stderr] 2022/12/09 14:04:57 Processing package math.
+[2022-12-09 14:04:57] [build-stderr] 2022/12/09 14:04:57 Extracting types for package math.
+[2022-12-09 14:04:57] [build-stderr] 2022/12/09 14:04:57 Done extracting types for package math.
+[2022-12-09 14:04:57] [build-stderr] 2022/12/09 14:04:57 Processing package unicode/utf8.
+[2022-12-09 14:04:57] [build-stderr] 2022/12/09 14:04:57 Extracting types for package unicode/utf8.
+[2022-12-09 14:04:57] [build-stderr] 2022/12/09 14:04:57 Done extracting types for package unicode/utf8.
+[2022-12-09 14:04:57] [build-stderr] 2022/12/09 14:04:57 Processing package strconv.
+[2022-12-09 14:04:57] [build-stderr] 2022/12/09 14:04:57 Extracting types for package strconv.
+[2022-12-09 14:04:57] [build-stderr] 2022/12/09 14:04:57 Done extracting types for package strconv.
+[2022-12-09 14:04:57] [build-stderr] 2022/12/09 14:04:57 Processing package unicode.
+[2022-12-09 14:04:57] [build-stderr] 2022/12/09 14:04:57 Extracting types for package unicode.
+[2022-12-09 14:04:57] [build-stderr] 2022/12/09 14:04:57 Done extracting types for package unicode.
+[2022-12-09 14:04:57] [build-stderr] 2022/12/09 14:04:57 Processing package reflect.
+[2022-12-09 14:04:57] [build-stderr] 2022/12/09 14:04:57 Extracting types for package reflect.
+[2022-12-09 14:04:57] [build-stderr] 2022/12/09 14:04:57 Done extracting types for package reflect.
+[2022-12-09 14:04:57] [build-stderr] 2022/12/09 14:04:57 Processing package sort.
+[2022-12-09 14:04:57] [build-stderr] 2022/12/09 14:04:57 Extracting types for package sort.
+[2022-12-09 14:04:57] [build-stderr] 2022/12/09 14:04:57 Done extracting types for package sort.
+[2022-12-09 14:04:57] [build-stderr] 2022/12/09 14:04:57 Processing package internal/fmtsort.
+[2022-12-09 14:04:57] [build-stderr] 2022/12/09 14:04:57 Extracting types for package internal/fmtsort.
+[2022-12-09 14:04:57] [build-stderr] 2022/12/09 14:04:57 Done extracting types for package internal/fmtsort.
+[2022-12-09 14:04:57] [build-stderr] 2022/12/09 14:04:57 Processing package io.
+[2022-12-09 14:04:57] [build-stderr] 2022/12/09 14:04:57 Extracting types for package io.
+[2022-12-09 14:04:57] [build-stderr] 2022/12/09 14:04:57 Done extracting types for package io.
+[2022-12-09 14:04:57] [build-stderr] 2022/12/09 14:04:57 Processing package internal/syscall/unix.
+[2022-12-09 14:04:57] [build-stderr] 2022/12/09 14:04:57 Extracting types for package internal/syscall/unix.
+[2022-12-09 14:04:57] [build-stderr] 2022/12/09 14:04:57 Done extracting types for package internal/syscall/unix.
+[2022-12-09 14:04:57] [build-stderr] 2022/12/09 14:04:57 Processing package internal/poll.
+[2022-12-09 14:04:57] [build-stderr] 2022/12/09 14:04:57 Extracting types for package internal/poll.
+[2022-12-09 14:04:57] [build-stderr] 2022/12/09 14:04:57 Done extracting types for package internal/poll.
+[2022-12-09 14:04:57] [build-stderr] 2022/12/09 14:04:57 Processing package internal/syscall/execenv.
+[2022-12-09 14:04:57] [build-stderr] 2022/12/09 14:04:57 Extracting types for package internal/syscall/execenv.
+[2022-12-09 14:04:57] [build-stderr] 2022/12/09 14:04:57 Done extracting types for package internal/syscall/execenv.
+[2022-12-09 14:04:57] [build-stderr] 2022/12/09 14:04:57 Processing package internal/testlog.
+[2022-12-09 14:04:57] [build-stderr] 2022/12/09 14:04:57 Extracting types for package internal/testlog.
+[2022-12-09 14:04:57] [build-stderr] 2022/12/09 14:04:57 Done extracting types for package internal/testlog.
+[2022-12-09 14:04:57] [build-stderr] 2022/12/09 14:04:57 Processing package path.
+[2022-12-09 14:04:57] [build-stderr] 2022/12/09 14:04:57 Extracting types for package path.
+[2022-12-09 14:04:57] [build-stderr] 2022/12/09 14:04:57 Done extracting types for package path.
+[2022-12-09 14:04:57] [build-stderr] 2022/12/09 14:04:57 Processing package io/fs.
+[2022-12-09 14:04:57] [build-stderr] 2022/12/09 14:04:57 Extracting types for package io/fs.
+[2022-12-09 14:04:57] [build-stderr] 2022/12/09 14:04:57 Done extracting types for package io/fs.
+[2022-12-09 14:04:57] [build-stderr] 2022/12/09 14:04:57 Processing package os.
+[2022-12-09 14:04:57] [build-stderr] 2022/12/09 14:04:57 Extracting types for package os.
+[2022-12-09 14:04:57] [build-stderr] 2022/12/09 14:04:57 Done extracting types for package os.
+[2022-12-09 14:04:57] [build-stderr] 2022/12/09 14:04:57 Processing package fmt.
+[2022-12-09 14:04:57] [build-stderr] 2022/12/09 14:04:57 Extracting types for package fmt.
+[2022-12-09 14:04:57] [build-stderr] 2022/12/09 14:04:57 Done extracting types for package fmt.
+[2022-12-09 14:04:57] [build-stderr] 2022/12/09 14:04:57 Processing package database/sql/driver.
+[2022-12-09 14:04:58] [build-stderr] 2022/12/09 14:04:58 Extracting types for package database/sql/driver.
+[2022-12-09 14:04:58] [build-stderr] 2022/12/09 14:04:58 Done extracting types for package database/sql/driver.
+[2022-12-09 14:04:58] [build-stderr] 2022/12/09 14:04:58 Processing package database/sql.
+[2022-12-09 14:04:58] [build-stderr] 2022/12/09 14:04:58 Extracting types for package database/sql.
+[2022-12-09 14:04:58] [build-stderr] 2022/12/09 14:04:58 Done extracting types for package database/sql.
+[2022-12-09 14:04:58] [build-stderr] 2022/12/09 14:04:58 Processing package hash.
+[2022-12-09 14:04:58] [build-stderr] 2022/12/09 14:04:58 Extracting types for package hash.
+[2022-12-09 14:04:58] [build-stderr] 2022/12/09 14:04:58 Done extracting types for package hash.
+[2022-12-09 14:04:58] [build-stderr] 2022/12/09 14:04:58 Processing package crypto.
+[2022-12-09 14:04:58] [build-stderr] 2022/12/09 14:04:58 Extracting types for package crypto.
+[2022-12-09 14:04:58] [build-stderr] 2022/12/09 14:04:58 Done extracting types for package crypto.
+[2022-12-09 14:04:58] [build-stderr] 2022/12/09 14:04:58 Processing package crypto/internal/subtle.
+[2022-12-09 14:04:58] [build-stderr] 2022/12/09 14:04:58 Extracting types for package crypto/internal/subtle.
+[2022-12-09 14:04:58] [build-stderr] 2022/12/09 14:04:58 Done extracting types for package crypto/internal/subtle.
+[2022-12-09 14:04:58] [build-stderr] 2022/12/09 14:04:58 Processing package crypto/subtle.
+[2022-12-09 14:04:58] [build-stderr] 2022/12/09 14:04:58 Extracting types for package crypto/subtle.
+[2022-12-09 14:04:58] [build-stderr] 2022/12/09 14:04:58 Done extracting types for package crypto/subtle.
+[2022-12-09 14:04:58] [build-stderr] 2022/12/09 14:04:58 Processing package encoding/binary.
+[2022-12-09 14:04:58] [build-stderr] 2022/12/09 14:04:58 Extracting types for package encoding/binary.
+[2022-12-09 14:04:58] [build-stderr] 2022/12/09 14:04:58 Done extracting types for package encoding/binary.
+[2022-12-09 14:04:58] [build-stderr] 2022/12/09 14:04:58 Processing package crypto/cipher.
+[2022-12-09 14:04:58] [build-stderr] 2022/12/09 14:04:58 Extracting types for package crypto/cipher.
+[2022-12-09 14:04:58] [build-stderr] 2022/12/09 14:04:58 Done extracting types for package crypto/cipher.
+[2022-12-09 14:04:58] [build-stderr] 2022/12/09 14:04:58 Processing package crypto/internal/boring/sig.
+[2022-12-09 14:04:58] [build-stderr] 2022/12/09 14:04:58 Extracting types for package crypto/internal/boring/sig.
+[2022-12-09 14:04:58] [build-stderr] 2022/12/09 14:04:58 Done extracting types for package crypto/internal/boring/sig.
+[2022-12-09 14:04:58] [build-stderr] 2022/12/09 14:04:58 Processing package crypto/internal/boring.
+[2022-12-09 14:04:58] [build-stderr] 2022/12/09 14:04:58 Extracting types for package crypto/internal/boring.
+[2022-12-09 14:04:58] [build-stderr] 2022/12/09 14:04:58 Done extracting types for package crypto/internal/boring.
+[2022-12-09 14:04:58] [build-stderr] 2022/12/09 14:04:58 Processing package crypto/sha1.
+[2022-12-09 14:04:58] [build-stderr] 2022/12/09 14:04:58 Extracting types for package crypto/sha1.
+[2022-12-09 14:04:58] [build-stderr] 2022/12/09 14:04:58 Done extracting types for package crypto/sha1.
+[2022-12-09 14:04:58] [build-stderr] 2022/12/09 14:04:58 Processing package crypto/sha256.
+[2022-12-09 14:04:58] [build-stderr] 2022/12/09 14:04:58 Extracting types for package crypto/sha256.
+[2022-12-09 14:04:58] [build-stderr] 2022/12/09 14:04:58 Done extracting types for package crypto/sha256.
+[2022-12-09 14:04:58] [build-stderr] 2022/12/09 14:04:58 Processing package crypto/sha512.
+[2022-12-09 14:04:58] [build-stderr] 2022/12/09 14:04:58 Extracting types for package crypto/sha512.
+[2022-12-09 14:04:58] [build-stderr] 2022/12/09 14:04:58 Done extracting types for package crypto/sha512.
+[2022-12-09 14:04:58] [build-stderr] 2022/12/09 14:04:58 Processing package strings.
+[2022-12-09 14:04:58] [build-stderr] 2022/12/09 14:04:58 Extracting types for package strings.
+[2022-12-09 14:04:58] [build-stderr] 2022/12/09 14:04:58 Done extracting types for package strings.
+[2022-12-09 14:04:58] [build-stderr] 2022/12/09 14:04:58 Processing package net/url.
+[2022-12-09 14:04:58] [build-stderr] 2022/12/09 14:04:58 Extracting types for package net/url.
+[2022-12-09 14:04:58] [build-stderr] 2022/12/09 14:04:58 Done extracting types for package net/url.
+[2022-12-09 14:04:58] [build-stderr] 2022/12/09 14:04:58 Processing package runtime/cgo.
+[2022-12-09 14:04:58] [build-stderr] 2022/12/09 14:04:58 Extracting types for package runtime/cgo.
+[2022-12-09 14:04:58] [build-stderr] 2022/12/09 14:04:58 Done extracting types for package runtime/cgo.
+[2022-12-09 14:04:58] [build-stderr] 2022/12/09 14:04:58 Processing package github.com/mattn/go-sqlite3.
+[2022-12-09 14:04:58] [build-stderr] 2022/12/09 14:04:58 Extracting types for package github.com/mattn/go-sqlite3.
+[2022-12-09 14:04:58] [build-stderr] 2022/12/09 14:04:58 Done extracting types for package github.com/mattn/go-sqlite3.
+[2022-12-09 14:04:58] [build-stderr] 2022/12/09 14:04:58 Processing package log.
+[2022-12-09 14:04:58] [build-stderr] 2022/12/09 14:04:58 Extracting types for package log.
+[2022-12-09 14:04:58] [build-stderr] 2022/12/09 14:04:58 Done extracting types for package log.
+[2022-12-09 14:04:58] [build-stderr] 2022/12/09 14:04:58 Processing package codeql-go/sqli.
+[2022-12-09 14:04:58] [build-stderr] 2022/12/09 14:04:58 Extracting types for package codeql-go/sqli.
+[2022-12-09 14:04:58] [build-stderr] 2022/12/09 14:04:58 Done extracting types for package codeql-go/sqli.
+[2022-12-09 14:04:58] [build-stderr] 2022/12/09 14:04:58 Done processing dependencies.
+[2022-12-09 14:04:58] [build-stderr] 2022/12/09 14:04:58 Starting to extract packages.
+[2022-12-09 14:04:58] [build-stderr] 2022/12/09 14:04:58 Skipping dependency package internal/goarch.
+[2022-12-09 14:04:58] [build-stderr] 2022/12/09 14:04:58 Skipping dependency package unsafe.
+[2022-12-09 14:04:58] [build-stderr] 2022/12/09 14:04:58 Skipping dependency package internal/unsafeheader.
+[2022-12-09 14:04:58] [build-stderr] 2022/12/09 14:04:58 Skipping dependency package internal/abi.
+[2022-12-09 14:04:58] [build-stderr] 2022/12/09 14:04:58 Skipping dependency package internal/cpu.
+[2022-12-09 14:04:58] [build-stderr] 2022/12/09 14:04:58 Skipping dependency package internal/bytealg.
+[2022-12-09 14:04:58] [build-stderr] 2022/12/09 14:04:58 Skipping dependency package internal/goexperiment.
+[2022-12-09 14:04:58] [build-stderr] 2022/12/09 14:04:58 Skipping dependency package internal/goos.
+[2022-12-09 14:04:58] [build-stderr] 2022/12/09 14:04:58 Skipping dependency package runtime/internal/atomic.
+[2022-12-09 14:04:58] [build-stderr] 2022/12/09 14:04:58 Skipping dependency package runtime/internal/math.
+[2022-12-09 14:04:58] [build-stderr] 2022/12/09 14:04:58 Skipping dependency package runtime/internal/sys.
+[2022-12-09 14:04:58] [build-stderr] 2022/12/09 14:04:58 Skipping dependency package runtime.
+[2022-12-09 14:04:58] [build-stderr] 2022/12/09 14:04:58 Skipping dependency package internal/reflectlite.
+[2022-12-09 14:04:58] [build-stderr] 2022/12/09 14:04:58 Skipping dependency package errors.
+[2022-12-09 14:04:58] [build-stderr] 2022/12/09 14:04:58 Skipping dependency package internal/race.
+[2022-12-09 14:04:58] [build-stderr] 2022/12/09 14:04:58 Skipping dependency package sync/atomic.
+[2022-12-09 14:04:58] [build-stderr] 2022/12/09 14:04:58 Skipping dependency package sync.
+[2022-12-09 14:04:58] [build-stderr] 2022/12/09 14:04:58 Skipping dependency package internal/itoa.
+[2022-12-09 14:04:58] [build-stderr] 2022/12/09 14:04:58 Skipping dependency package internal/oserror.
+[2022-12-09 14:04:58] [build-stderr] 2022/12/09 14:04:58 Skipping dependency package syscall.
+[2022-12-09 14:04:58] [build-stderr] 2022/12/09 14:04:58 Skipping dependency package time.
+[2022-12-09 14:04:58] [build-stderr] 2022/12/09 14:04:58 Skipping dependency package context.
+[2022-12-09 14:04:58] [build-stderr] 2022/12/09 14:04:58 Skipping dependency package math/bits.
+[2022-12-09 14:04:58] [build-stderr] 2022/12/09 14:04:58 Skipping dependency package math.
+[2022-12-09 14:04:58] [build-stderr] 2022/12/09 14:04:58 Skipping dependency package unicode/utf8.
+[2022-12-09 14:04:58] [build-stderr] 2022/12/09 14:04:58 Skipping dependency package strconv.
+[2022-12-09 14:04:58] [build-stderr] 2022/12/09 14:04:58 Skipping dependency package unicode.
+[2022-12-09 14:04:58] [build-stderr] 2022/12/09 14:04:58 Skipping dependency package reflect.
+[2022-12-09 14:04:58] [build-stderr] 2022/12/09 14:04:58 Skipping dependency package sort.
+[2022-12-09 14:04:59] [build-stderr] 2022/12/09 14:04:58 Skipping dependency package internal/fmtsort.
+[2022-12-09 14:04:59] [build-stderr] 2022/12/09 14:04:58 Skipping dependency package io.
+[2022-12-09 14:04:59] [build-stderr] 2022/12/09 14:04:58 Skipping dependency package internal/syscall/unix.
+[2022-12-09 14:04:59] [build-stderr] 2022/12/09 14:04:58 Skipping dependency package internal/poll.
+[2022-12-09 14:04:59] [build-stderr] 2022/12/09 14:04:58 Skipping dependency package internal/syscall/execenv.
+[2022-12-09 14:04:59] [build-stderr] 2022/12/09 14:04:58 Skipping dependency package internal/testlog.
+[2022-12-09 14:04:59] [build-stderr] 2022/12/09 14:04:58 Skipping dependency package path.
+[2022-12-09 14:04:59] [build-stderr] 2022/12/09 14:04:58 Skipping dependency package io/fs.
+[2022-12-09 14:04:59] [build-stderr] 2022/12/09 14:04:58 Skipping dependency package os.
+[2022-12-09 14:04:59] [build-stderr] 2022/12/09 14:04:58 Skipping dependency package fmt.
+[2022-12-09 14:04:59] [build-stderr] 2022/12/09 14:04:58 Skipping dependency package database/sql/driver.
+[2022-12-09 14:04:59] [build-stderr] 2022/12/09 14:04:58 Skipping dependency package database/sql.
+[2022-12-09 14:04:59] [build-stderr] 2022/12/09 14:04:58 Skipping dependency package hash.
+[2022-12-09 14:04:59] [build-stderr] 2022/12/09 14:04:58 Skipping dependency package crypto.
+[2022-12-09 14:04:59] [build-stderr] 2022/12/09 14:04:58 Skipping dependency package crypto/internal/subtle.
+[2022-12-09 14:04:59] [build-stderr] 2022/12/09 14:04:58 Skipping dependency package crypto/subtle.
+[2022-12-09 14:04:59] [build-stderr] 2022/12/09 14:04:58 Skipping dependency package encoding/binary.
+[2022-12-09 14:04:59] [build-stderr] 2022/12/09 14:04:58 Skipping dependency package crypto/cipher.
+[2022-12-09 14:04:59] [build-stderr] 2022/12/09 14:04:58 Skipping dependency package crypto/internal/boring/sig.
+[2022-12-09 14:04:59] [build-stderr] 2022/12/09 14:04:58 Skipping dependency package crypto/internal/boring.
+[2022-12-09 14:04:59] [build-stderr] 2022/12/09 14:04:58 Skipping dependency package crypto/sha1.
+[2022-12-09 14:04:59] [build-stderr] 2022/12/09 14:04:58 Skipping dependency package crypto/sha256.
+[2022-12-09 14:04:59] [build-stderr] 2022/12/09 14:04:58 Skipping dependency package crypto/sha512.
+[2022-12-09 14:04:59] [build-stderr] 2022/12/09 14:04:58 Skipping dependency package strings.
+[2022-12-09 14:04:59] [build-stderr] 2022/12/09 14:04:58 Skipping dependency package net/url.
+[2022-12-09 14:04:59] [build-stderr] 2022/12/09 14:04:58 Skipping dependency package runtime/cgo.
+[2022-12-09 14:04:59] [build-stderr] 2022/12/09 14:04:58 Skipping dependency package github.com/mattn/go-sqlite3.
+[2022-12-09 14:04:59] [build-stderr] 2022/12/09 14:04:58 Skipping dependency package log.
+[2022-12-09 14:04:59] [build-stderr] 2022/12/09 14:04:58 Extracting /Users/hohn/local/codeql-workshops-staging/go/codeql-go-sqli/go.mod
+[2022-12-09 14:04:59] [build-stderr] 2022/12/09 14:04:58 Extracting /Users/hohn/local/codeql-workshops-staging/go/codeql-go-sqli/add-user.go
+[2022-12-09 14:04:59] [build-stderr] 2022/12/09 14:04:58 Done extracting /Users/hohn/local/codeql-workshops-staging/go/codeql-go-sqli/go.mod (2ms)
+[2022-12-09 14:04:59] [build-stderr] 2022/12/09 14:04:58 Done extracting /Users/hohn/local/codeql-workshops-staging/go/codeql-go-sqli/add-user.go (18ms)
+[2022-12-09 14:04:59] [build-stderr] 2022/12/09 14:04:58 Done extracting packages.
+[2022-12-09 14:04:59] Plumbing command codeql database trace-command completed.
+[2022-12-09 14:04:59] [PROGRESS] database create> Finalizing database at /Users/hohn/local/codeql-workshops-staging/go/codeql-go-sqli/go-sqli-a9f3f19.
+[2022-12-09 14:04:59] Running plumbing command: codeql database finalize --threads=8 --mode=normal --no-db-cluster -- /Users/hohn/local/codeql-workshops-staging/go/codeql-go-sqli/go-sqli-a9f3f19
+[2022-12-09 14:04:59] Using pre-finalize script /Users/hohn/local/osx64-2.11.5/codeql/go/tools/pre-finalize.sh.
+[2022-12-09 14:04:59] [PROGRESS] database finalize> Running pre-finalize script /Users/hohn/local/osx64-2.11.5/codeql/go/tools/pre-finalize.sh in /Users/hohn/local/codeql-workshops-staging/go/codeql-go-sqli.
+[2022-12-09 14:04:59] Running plumbing command: codeql database trace-command --working-dir=/Users/hohn/local/codeql-workshops-staging/go/codeql-go-sqli --no-tracing --threads=8 -- /Users/hohn/local/codeql-workshops-staging/go/codeql-go-sqli/go-sqli-a9f3f19 /Users/hohn/local/osx64-2.11.5/codeql/go/tools/pre-finalize.sh
+[2022-12-09 14:04:59] [PROGRESS] database trace-command> Running command in /Users/hohn/local/codeql-workshops-staging/go/codeql-go-sqli: [/Users/hohn/local/osx64-2.11.5/codeql/go/tools/pre-finalize.sh]
+[2022-12-09 14:04:59] [build-stderr] Scanning for files in /Users/hohn/local/codeql-workshops-staging/go/codeql-go-sqli...
+[2022-12-09 14:04:59] Plumbing command codeql database trace-command completed.
+[2022-12-09 14:04:59] [PROGRESS] database finalize> Running TRAP import for CodeQL database at /Users/hohn/local/codeql-workshops-staging/go/codeql-go-sqli/go-sqli-a9f3f19...
+[2022-12-09 14:04:59] Running plumbing command: codeql dataset import --dbscheme=/Users/hohn/local/osx64-2.11.5/codeql/go/go.dbscheme --threads=8 -- /Users/hohn/local/codeql-workshops-staging/go/codeql-go-sqli/go-sqli-a9f3f19/db-go /Users/hohn/local/codeql-workshops-staging/go/codeql-go-sqli/go-sqli-a9f3f19/trap/go
+[2022-12-09 14:05:00] Clearing disk cache since the version file /Users/hohn/local/codeql-workshops-staging/go/codeql-go-sqli/go-sqli-a9f3f19/db-go/default/cache/version does not exist
+[2022-12-09 14:05:00] Tuple pool not found. Clearing relations with cached strings
+[2022-12-09 14:05:00] Trimming disk cache at /Users/hohn/local/codeql-workshops-staging/go/codeql-go-sqli/go-sqli-a9f3f19/db-go/default/cache in mode brutal.
+[2022-12-09 14:05:00] Sequence stamp origin is -6378612697513152865
+[2022-12-09 14:05:00] Pausing evaluation to hard-clear memory at sequence stamp o+0
+[2022-12-09 14:05:00] Unpausing evaluation
+[2022-12-09 14:05:00] Pausing evaluation to quickly trim disk at sequence stamp o+1
+[2022-12-09 14:05:00] Unpausing evaluation
+[2022-12-09 14:05:00] Pausing evaluation to zealously trim disk at sequence stamp o+2
+[2022-12-09 14:05:00] Unpausing evaluation
+[2022-12-09 14:05:00] Trimming completed (4ms): Purged everything.
+[2022-12-09 14:05:00] Scanning for files in /Users/hohn/local/codeql-workshops-staging/go/codeql-go-sqli/go-sqli-a9f3f19/trap/go
+[2022-12-09 14:05:00] Importing add-user.go.trap.gz (1 of 63)
+[2022-12-09 14:05:00] Importing sqli.trap.gz (2 of 63)
+[2022-12-09 14:05:00] Importing 28f530e9e525976ed00ea880e495de_0.trap.gz (4 of 63)
+[2022-12-09 14:05:00] Importing go.mod.trap.gz (3 of 63)
+[2022-12-09 14:05:00] Importing context.trap.gz (5 of 63)
+[2022-12-09 14:05:00] Importing cipher.trap.gz (6 of 63)
+[2022-12-09 14:05:00] Importing sig.trap.gz (7 of 63)
+[2022-12-09 14:05:00] Importing boring.trap.gz (8 of 63)
+[2022-12-09 14:05:00] Importing subtle.trap.gz (9 of 63)
+[2022-12-09 14:05:00] Importing sha1.trap.gz (10 of 63)
+[2022-12-09 14:05:00] Importing sha256.trap.gz (11 of 63)
+[2022-12-09 14:05:00] Importing sha512.trap.gz (12 of 63)
+[2022-12-09 14:05:00] Importing subtle.trap.gz (13 of 63)
+[2022-12-09 14:05:00] Importing crypto.trap.gz (14 of 63)
+[2022-12-09 14:05:00] Importing driver.trap.gz (15 of 63)
+[2022-12-09 14:05:00] Importing sql.trap.gz (16 of 63)
+[2022-12-09 14:05:00] Importing binary.trap.gz (17 of 63)
+[2022-12-09 14:05:00] Importing errors.trap.gz (18 of 63)
+[2022-12-09 14:05:00] Importing fmt.trap.gz (19 of 63)
+[2022-12-09 14:05:00] Importing go-sqlite3.trap.gz (20 of 63)
+[2022-12-09 14:05:00] Importing hash.trap.gz (21 of 63)
+[2022-12-09 14:05:00] Importing abi.trap.gz (22 of 63)
+[2022-12-09 14:05:00] Importing bytealg.trap.gz (23 of 63)
+[2022-12-09 14:05:00] Importing cpu.trap.gz (24 of 63)
+[2022-12-09 14:05:00] Importing fmtsort.trap.gz (25 of 63)
+[2022-12-09 14:05:00] Importing goarch.trap.gz (26 of 63)
+[2022-12-09 14:05:00] Importing goexperiment.trap.gz (27 of 63)
+[2022-12-09 14:05:00] Importing goos.trap.gz (28 of 63)
+[2022-12-09 14:05:00] Importing itoa.trap.gz (29 of 63)
+[2022-12-09 14:05:00] Importing oserror.trap.gz (30 of 63)
+[2022-12-09 14:05:00] Importing poll.trap.gz (31 of 63)
+[2022-12-09 14:05:00] Importing race.trap.gz (32 of 63)
+[2022-12-09 14:05:00] Importing reflectlite.trap.gz (33 of 63)
+[2022-12-09 14:05:00] Importing execenv.trap.gz (34 of 63)
+[2022-12-09 14:05:00] Importing unix.trap.gz (35 of 63)
+[2022-12-09 14:05:00] Importing testlog.trap.gz (36 of 63)
+[2022-12-09 14:05:00] Importing unsafeheader.trap.gz (37 of 63)
+[2022-12-09 14:05:00] Importing fs.trap.gz (38 of 63)
+[2022-12-09 14:05:00] Importing io.trap.gz (39 of 63)
+[2022-12-09 14:05:00] Importing log.trap.gz (40 of 63)
+[2022-12-09 14:05:00] Importing bits.trap.gz (41 of 63)
+[2022-12-09 14:05:00] Importing math.trap.gz (42 of 63)
+[2022-12-09 14:05:00] Importing url.trap.gz (43 of 63)
+[2022-12-09 14:05:00] Importing os.trap.gz (44 of 63)
+[2022-12-09 14:05:00] Importing path.trap.gz (45 of 63)
+[2022-12-09 14:05:00] Importing reflect.trap.gz (46 of 63)
+[2022-12-09 14:05:00] Importing cgo.trap.gz (47 of 63)
+[2022-12-09 14:05:00] Importing atomic.trap.gz (48 of 63)
+[2022-12-09 14:05:00] Importing math.trap.gz (49 of 63)
+[2022-12-09 14:05:00] Importing sys.trap.gz (50 of 63)
+[2022-12-09 14:05:00] Importing runtime.trap.gz (51 of 63)
+[2022-12-09 14:05:00] Importing sort.trap.gz (52 of 63)
+[2022-12-09 14:05:00] Importing sourceLocationPrefix.trap.gz (53 of 63)
+[2022-12-09 14:05:00] Importing strconv.trap.gz (54 of 63)
+[2022-12-09 14:05:00] Importing strings.trap.gz (55 of 63)
+[2022-12-09 14:05:00] Importing atomic.trap.gz (56 of 63)
+[2022-12-09 14:05:00] Importing sync.trap.gz (57 of 63)
+[2022-12-09 14:05:00] Importing syscall.trap.gz (58 of 63)
+[2022-12-09 14:05:00] Importing time.trap.gz (59 of 63)
+[2022-12-09 14:05:00] Importing utf8.trap.gz (60 of 63)
+[2022-12-09 14:05:00] Importing unicode.trap.gz (61 of 63)
+[2022-12-09 14:05:00] Importing universe.trap.gz (62 of 63)
+[2022-12-09 14:05:00] Importing unsafe.trap.gz (63 of 63)
+[2022-12-09 14:05:00] Merging 2 fragments for folders.
+[2022-12-09 14:05:00] Merging 2 fragments for containerparent.
+[2022-12-09 14:05:00] Merging 2 fragments for files.
+[2022-12-09 14:05:00] Merging 2 fragments for locations_default.
+[2022-12-09 14:05:00] Merging 1 fragment for modexprs.
+[2022-12-09 14:05:00] Merging 1 fragment for modtokens.
+[2022-12-09 14:05:00] Merging 2 fragments for has_location.
+[2022-12-09 14:05:00] Merging 8 fragments for scopes.
+[2022-12-09 14:05:00] Merging 8 fragments for scopenesting.
+[2022-12-09 14:05:00] Merging 8 fragments for objects.
+[2022-12-09 14:05:00] Merging 8 fragments for objectscopes.
+[2022-12-09 14:05:00] Merging 8 fragments for types.
+[2022-12-09 14:05:00] Merging 8 fragments for component_types.
+[2022-12-09 14:05:00] Merging 8 fragments for objecttypes.
+[2022-12-09 14:05:00] Merging 8 fragments for element_type.
+[2022-12-09 14:05:00] Merging 8 fragments for packages.
+[2022-12-09 14:05:00] Merging 8 fragments for typename.
+[2022-12-09 14:05:00] Merging 8 fragments for underlying_type.
+[2022-12-09 14:05:00] Merging 8 fragments for type_objects.
+[2022-12-09 14:05:00] Merging 8 fragments for methodreceivers.
+[2022-12-09 14:05:00] Merging 8 fragments for methodhosts.
+[2022-12-09 14:05:00] Merging 8 fragments for fieldstructs.
+[2022-12-09 14:05:00] Merging 8 fragments for base_type.
+[2022-12-09 14:05:00] Merging 8 fragments for key_type.
+[2022-12-09 14:05:00] Merging 8 fragments for array_length.
+[2022-12-09 14:05:00] Merging 8 fragments for variadic.
+[2022-12-09 14:05:00] Merging 1 fragment for literals.
+[2022-12-09 14:05:00] Merging 1 fragment for exprs.
+[2022-12-09 14:05:00] Merging 1 fragment for specs.
+[2022-12-09 14:05:00] Merging 1 fragment for type_of.
+[2022-12-09 14:05:00] Merging 1 fragment for defs.
+[2022-12-09 14:05:00] Merging 1 fragment for decls.
+[2022-12-09 14:05:00] Merging 1 fragment for fields.
+[2022-12-09 14:05:00] Merging 1 fragment for uses.
+[2022-12-09 14:05:00] Merging 1 fragment for scopenodes.
+[2022-12-09 14:05:00] Merging 1 fragment for constvalues.
+[2022-12-09 14:05:00] Merging 1 fragment for stmts.
+[2022-12-09 14:05:00] Merging 1 fragment for numlines.
+[2022-12-09 14:05:00] Merging 1 fragment for typeparam.
+[2022-12-09 14:05:00] Merging 1 fragment for compilations.
+[2022-12-09 14:05:00] Merging 1 fragment for compilation_args.
+[2022-12-09 14:05:00] Merging 1 fragment for compilation_compiling_files.
+[2022-12-09 14:05:00] Merging 1 fragment for compilation_finished.
+[2022-12-09 14:05:00] Merging 1 fragment for sourceLocationPrefix.
+[2022-12-09 14:05:00] Saving string and id pools to disk.
+[2022-12-09 14:05:00] Finished importing trap files.
+[2022-12-09 14:05:00] Pausing evaluation to close the cache at sequence stamp o+3
+[2022-12-09 14:05:00] The disk cache is freshly trimmed; leave it be.
+[2022-12-09 14:05:00] Unpausing evaluation
+[2022-12-09 14:05:00] Plumbing command codeql dataset import completed.
+[2022-12-09 14:05:00] [PROGRESS] database finalize> TRAP import complete (742ms).
+[2022-12-09 14:05:00] Running plumbing command: codeql database cleanup --mode=normal -- /Users/hohn/local/codeql-workshops-staging/go/codeql-go-sqli/go-sqli-a9f3f19
+[2022-12-09 14:05:00] [PROGRESS] database cleanup> Cleaning up existing TRAP files after import...
+[2022-12-09 14:05:00] [PROGRESS] database cleanup> TRAP files cleaned up (4ms).
+[2022-12-09 14:05:00] [PROGRESS] database cleanup> Cleaning up scratch directory...
+[2022-12-09 14:05:00] [PROGRESS] database cleanup> Scratch directory cleaned up (1ms).
+[2022-12-09 14:05:00] Running plumbing command: codeql dataset cleanup --mode=normal -- /Users/hohn/local/codeql-workshops-staging/go/codeql-go-sqli/go-sqli-a9f3f19/db-go
+[2022-12-09 14:05:00] [PROGRESS] dataset cleanup> Cleaning up dataset in /Users/hohn/local/codeql-workshops-staging/go/codeql-go-sqli/go-sqli-a9f3f19/db-go.
+[2022-12-09 14:05:00] Trimming disk cache at /Users/hohn/local/codeql-workshops-staging/go/codeql-go-sqli/go-sqli-a9f3f19/db-go/default/cache in mode normal.
+[2022-12-09 14:05:00] Sequence stamp origin is -6378612695327207784
+[2022-12-09 14:05:00] Pausing evaluation to zealously trim disk at sequence stamp o+0
+[2022-12-09 14:05:00] Unpausing evaluation
+[2022-12-09 14:05:00] Trimming completed (0ms): Trimmed disposable data from cache.
+[2022-12-09 14:05:00] Pausing evaluation to close the cache at sequence stamp o+1
+[2022-12-09 14:05:00] The disk cache is freshly trimmed; leave it be.
+[2022-12-09 14:05:00] Unpausing evaluation
+[2022-12-09 14:05:00] [PROGRESS] dataset cleanup> Trimmed disposable data from cache.
+[2022-12-09 14:05:00] [PROGRESS] dataset cleanup> Finalizing dataset in /Users/hohn/local/codeql-workshops-staging/go/codeql-go-sqli/go-sqli-a9f3f19/db-go
+[2022-12-09 14:05:00] [DETAILS] dataset cleanup> Finished deleting ID pool from /Users/hohn/local/codeql-workshops-staging/go/codeql-go-sqli/go-sqli-a9f3f19/db-go (1ms).
+[2022-12-09 14:05:00] Plumbing command codeql dataset cleanup completed.
+[2022-12-09 14:05:00] Plumbing command codeql database cleanup completed with status 0.
+[2022-12-09 14:05:00] Plumbing command codeql database finalize completed.
+[2022-12-09 14:05:00] [PROGRESS] database create> Successfully created database at /Users/hohn/local/codeql-workshops-staging/go/codeql-go-sqli/go-sqli-a9f3f19.
+[2022-12-09 14:05:00] Terminating normally.

@@ -9,6 +9,25 @@
 import java
 import semmle.code.java.dataflow.TaintTracking
 
+/* For further discussions */
+private MethodCall getSystemOutPrintln() {
+  exists(SystemOut systemOut |
+    result.getQualifier() = systemOut.getAnAccess() and
+    result.getMethod().getName() = "println"
+  )
+}
+
+/* For further discussions */
+private MethodCall getSystemConsoleReadLine() {
+  exists(TypeAccess system, MethodCall systemConsole |
+    system.getType() instanceof TypeSystem and
+    systemConsole.getQualifier() = system and
+    systemConsole.getMethod().getName() = "console" and
+    result.getMethod().getName() = "readLine" and
+    result.getQualifier() = systemConsole
+  )
+}
+
 module SqliFlowConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
     // System.console().readLine();

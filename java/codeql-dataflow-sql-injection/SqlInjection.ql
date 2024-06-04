@@ -31,8 +31,8 @@ private MethodCall getSystemConsoleReadLine() {
 module SqliFlowConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
     // System.console().readLine();
-    exists(Call read |
-      read.getCallee().getName() = "readLine" and
+    exists(MethodCall read |
+      read.getMethod().getName() = "readLine" and
       read = source.asExpr()
     )
   }
@@ -48,8 +48,8 @@ module SqliFlowConfig implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node sink) {
     // conn.createStatement().executeUpdate(query);
-    exists(Call exec |
-      exec.getCallee().getName() = "executeUpdate" and
+    exists(MethodCall exec |
+      exec.getMethod().getName() = "executeUpdate" and
       exec.getArgument(0) = sink.asExpr()
     )
   }

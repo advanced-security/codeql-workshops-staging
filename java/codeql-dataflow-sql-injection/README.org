@@ -116,17 +116,19 @@
 
    3. Fill in the /taintflow configuration/ boilerplate
       #+BEGIN_SRC java
-        class SqliFlowConfig extends TaintTracking::Configuration {
-            SqliFlowConfig() { this = "SqliFlow" }
+      import semmle.code.java.dataflow.TaintTracking
 
-            override predicate isSource(DataFlow::Node node) {
-                none()
-                    }
+      module SqliFlowConfig implements DataFlow::ConfigSig {
+         predicate isSource(DataFlow::Node source) {
+            none()
+         }
 
-            override predicate isSink(DataFlow::Node node) {
-                none()
-                    }
-        }
+         predicate isSink(DataFlow::Node sink) {
+            none()
+         }
+      }
+
+      module MyFlow = TaintTracking::Global<SqliFlowConfig>;
       #+END_SRC
 
    The final query (without =isAdditionalTaintStep=) is
@@ -141,12 +143,10 @@
 
      import java
      import semmle.code.java.dataflow.TaintTracking
-     import DataFlow::PathGraph
 
-     class SqliFlowConfig extends TaintTracking::Configuration {
-         SqliFlowConfig() { this = "SqliFlow" }
+     module SqliFlowConfig implements DataFlow::ConfigSig {
 
-         override predicate isSource(DataFlow::Node source) {
+         predicate isSource(DataFlow::Node source) {
             // System.console().readLine();
             exists(Call read |
                 read.getCallee().getName() = "readLine" and
@@ -154,7 +154,7 @@
             )
         }
 
-         override predicate isSink(DataFlow::Node sink) {
+         predicate isSink(DataFlow::Node sink) {
             // conn.createStatement().executeUpdate(query);
             exists(Call exec |
                 exec.getCallee().getName() = "executeUpdate" and
@@ -162,10 +162,12 @@
             )
         }
      }
+    module MyDataFlow = TaintTracking::Global<SqliFlowConfig>;
+    import MyDataFlow::PathGraph
 
-     from SqliFlowConfig conf, DataFlow::PathNode source, DataFlow::PathNode sink
-     where conf.hasFlowPath(source, sink)
-     select sink, source, sink, "Possible SQL injection"
+   from MyDataFlow::PathNode source, MyDataFlow::PathNode sink
+   where MyDataFlow::flowPath(source, sink)
+   select sink, source, sink, "Possible SQL injection"
    #+END_SRC
 
 ** Optional: sarif file review of the results

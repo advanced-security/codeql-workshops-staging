@@ -1,0 +1,4 @@
+name: codeql-javascript-introduction
+version: 0.0.0
+dependencies:
+    codeql/javascript-all: "*"

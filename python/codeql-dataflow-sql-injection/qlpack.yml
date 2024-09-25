@@ -1,3 +1,4 @@
 name: codeql-workshop/python-sql-injection
 version: 0.0.0
-libraryPathDependencies: codeql-python
+dependencies:
+    codeql/python-all: "*"

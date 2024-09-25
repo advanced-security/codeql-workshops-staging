@@ -9,19 +9,21 @@
 import java
 import semmle.code.java.dataflow.TaintTracking
 
+predicate isReadLine(MethodCall read) {
+  read.getMethod().getName() = "readLine"
+}
+
+predicate isExecuteUpdate(MethodCall exec) {
+  exec.getMethod().getName() = "executeUpdate"
+}
+
 module SqliFlowConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
-    exists(MethodCall read |
-      read.getMethod().getName() = "readLine" and
-      read = source.asExpr()
-    )
+    isReadLine(source.asExpr())
   }
 
   predicate isSink(DataFlow::Node sink) {
-    exists(MethodCall exec |
-      exec.getMethod().getName() = "executeUpdate" and
-      exec.getArgument(0) = sink.asExpr()
-    )
+    isExecuteUpdate(sink.asExpr())
   }
 }
 

@@ -7,10 +7,16 @@
 import javascript
 import DataFlow::PathGraph
 
+/* 1. Source of the vulnerability. */
 class ReadFileSyncCall extends API::CallNode {
-  ReadFileSyncCall() { this = API::moduleImport("fs").getMember("readFileSync").getACall() }
+  ReadFileSyncCall() { this =
+     API::moduleImport("fs")
+         .getMember("readFileSync")
+         .getACall() 
+  }
 }
 
+/* 2. Sink of the vulnerability. */
 class SqliteDatabaseInit extends DataFlow::SourceNode {
   SqliteDatabaseInit() {
     this =
@@ -21,9 +27,10 @@ class SqliteDatabaseInit extends DataFlow::SourceNode {
   }
 }
 
+/* 3. Sink of the vulnerability, generalized. */
 private DataFlow::SourceNode sqliteDatabaseGeneralized(DataFlow::TypeTracker t) {
   t.start() and
-  exists(SqliteDatabaseInit sqliteDatabaseInit | result = sqliteDatabaseInit)
+  result instanceof SqliteDatabaseInit
   or
   exists(DataFlow::TypeTracker t2 | result = sqliteDatabaseGeneralized(t2).track(t2, t))
 }

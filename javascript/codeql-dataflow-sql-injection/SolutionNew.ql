@@ -28,15 +28,15 @@ class SqliteDatabaseInit extends DataFlow::SourceNode {
 }
 
 /** 3. Sink of the vulnerability, generalized. */
-private DataFlow::SourceNode sqliteDatabaseGeneralized(DataFlow::TypeTracker t) {
+private DataFlow::SourceNode sqliteDatabaseInitGeneralized(DataFlow::TypeTracker t) {
   t.start() and
   result instanceof SqliteDatabaseInit
   or
-  exists(DataFlow::TypeTracker t2 | result = sqliteDatabaseGeneralized(t2).track(t2, t))
+  exists(DataFlow::TypeTracker t2 | result = sqliteDatabaseInitGeneralized(t2).track(t2, t))
 }
 
-DataFlow::SourceNode sqliteDatabaseGeneralized() {
-  result = sqliteDatabaseGeneralized(DataFlow::TypeTracker::end())
+DataFlow::SourceNode sqliteDatabaseInitGeneralized() {
+  result = sqliteDatabaseInitGeneralized(DataFlow::TypeTracker::end())
 }
 
 class SqlInjectionConfiguration extends TaintTracking::Configuration {
@@ -45,7 +45,7 @@ class SqlInjectionConfiguration extends TaintTracking::Configuration {
   override predicate isSource(DataFlow::Node source) { source instanceof ReadFileSyncCall }
 
   override predicate isSink(DataFlow::Node sink) {
-    sink = sqliteDatabaseGeneralized().getAMethodCall("exec")
+    sink = sqliteDatabaseInitGeneralized().getAMethodCall("exec")
   }
 }
 

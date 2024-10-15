@@ -27,17 +27,17 @@ class SqliteDatabaseInit extends DataFlow::SourceNode {
 }
 
 /* =================== !!! WARNING BOILERPLATE CODE INCOMING !!! ======================= */
-private DataFlow::SourceNode sqliteDatabaseGeneralized(DataFlow::TypeTracker t) {
+private DataFlow::SourceNode sqliteDatabaseInitGeneralized(DataFlow::TypeTracker t) {
   t.start() and
   /* ========== Put the thing we want to generalize here; else is boilerplate ========== */
   result instanceof SqliteDatabaseInit
   /*==================================================================================== */
   or
-  exists(DataFlow::TypeTracker t2 | result = sqliteDatabaseGeneralized(t2).track(t2, t))
+  exists(DataFlow::TypeTracker t2 | result = sqliteDatabaseInitGeneralized(t2).track(t2, t))
 }
 
-private DataFlow::SourceNode sqliteDatabaseGeneralized() {
-  result = sqliteDatabaseGeneralized(DataFlow::TypeTracker::end())
+private DataFlow::SourceNode sqliteDatabaseInitGeneralized() {
+  result = sqliteDatabaseInitGeneralized(DataFlow::TypeTracker::end())
 }
 /* =================== !!! WARNING BOILERPLATE CODE INCOMING !!! ======================= */
 
@@ -49,7 +49,7 @@ class SqlInjectionConfiguration extends TaintTracking::Configuration {
   }
 
   override predicate isSink(DataFlow::Node sink) {
-    sink = sqliteDatabaseGeneralized().getAMethodCall("exec")  // Now it should work.
+    sink = sqliteDatabaseInitGeneralized().getAMethodCall("exec")  // Now it should work.
   }
 }
 

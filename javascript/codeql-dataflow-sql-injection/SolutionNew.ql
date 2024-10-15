@@ -21,21 +21,25 @@ class SqliteDatabaseInit extends DataFlow::SourceNode {
   }
 }
 
-private DataFlow::SourceNode sqliteDatabase(DataFlow::TypeTracker t) {
+private DataFlow::SourceNode sqliteDatabaseGeneralized(DataFlow::TypeTracker t) {
   t.start() and
   exists(SqliteDatabaseInit sqliteDatabaseInit | result = sqliteDatabaseInit)
   or
-  exists(DataFlow::TypeTracker t2 | result = sqliteDatabase(t2).track(t2, t))
+  exists(DataFlow::TypeTracker t2 | result = sqliteDatabaseGeneralized(t2).track(t2, t))
 }
 
-DataFlow::SourceNode sqliteDatabase() { result = sqliteDatabase(DataFlow::TypeTracker::end()) }
+DataFlow::SourceNode sqliteDatabaseGeneralized() {
+  result = sqliteDatabaseGeneralized(DataFlow::TypeTracker::end())
+}
 
 class SqlInjectionConfiguration extends TaintTracking::Configuration {
   SqlInjectionConfiguration() { this = "SQL Injection with SQLite3" }
 
   override predicate isSource(DataFlow::Node source) { source instanceof ReadFileSyncCall }
 
-  override predicate isSink(DataFlow::Node sink) { sink = sqliteDatabase().getAMethodCall("exec") }
+  override predicate isSink(DataFlow::Node sink) {
+    sink = sqliteDatabaseGeneralized().getAMethodCall("exec")
+  }
 }
 
 from SqlInjectionConfiguration config, DataFlow::PathNode start, DataFlow::PathNode end

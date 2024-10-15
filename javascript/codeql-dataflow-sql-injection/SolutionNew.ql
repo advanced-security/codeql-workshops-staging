@@ -7,7 +7,7 @@
 import javascript
 import DataFlow::PathGraph
 
-/* 1. Source of the vulnerability. */
+/** 1. Source of the vulnerability. */ 
 class ReadFileSyncCall extends API::CallNode {
   ReadFileSyncCall() { this =
      API::moduleImport("fs")
@@ -16,7 +16,7 @@ class ReadFileSyncCall extends API::CallNode {
   }
 }
 
-/* 2. Sink of the vulnerability. */
+/** 2. Sink of the vulnerability. */ 
 class SqliteDatabaseInit extends DataFlow::SourceNode {
   SqliteDatabaseInit() {
     this =
@@ -27,7 +27,7 @@ class SqliteDatabaseInit extends DataFlow::SourceNode {
   }
 }
 
-/* 3. Sink of the vulnerability, generalized. */
+/** 3. Sink of the vulnerability, generalized. */
 private DataFlow::SourceNode sqliteDatabaseGeneralized(DataFlow::TypeTracker t) {
   t.start() and
   result instanceof SqliteDatabaseInit

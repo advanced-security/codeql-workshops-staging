@@ -18,28 +18,37 @@
   2. Download and install the
      [[https://codeql.github.com/docs/codeql-for-visual-studio-code/setting-up-codeql-in-visual-studio-code/#installing-the-extension][CodeQL extension for Visual Studio Code]].
 
-  3. [[https://codeql.github.com/docs/codeql-for-visual-studio-code/setting-up-codeql-in-visual-studio-code/#using-the-starter-workspace][Set up the starter workspace]].
-     - Basically,
-       =git clone --recursive https://github.com/github/vscode-codeql-starter.git=
-     - *Important*: Don't forget to =git clone --recursive= or
-       =git submodule update --init --remote=, so that you obtain the
-       standard query libraries.
+  3. Install the codeql cli and packs
+     #+BEGIN_SRC sh
+       cd ~/local
+       mkdir osx64-2.11.5
+       wget https://github.com/github/codeql-cli-binaries/releases/download/v2.11.5/codeql-osx64.zip
+       /usr/bin/xattr -c codeql-osx64.zip
+       cd osx64-2.11.5
+       unzip ../codeql-osx64.zip
 
-  4. Open the starter workspace: File > Open Workspace > Browse to
-     =vscode-codeql-starter/vscode-codeql-starter.code-workspace=.
+       cd ~/local/osx64-2.11.5
 
-  5. Download the sample database [[https://drive.google.com/file/d/1jxLWHAzQb6SUfgAx3QyVkFTDYQU1woqV/view?usp=sharing][=go-sqli-ba5819d.db.zip=]]
+       # Choose consistent codeql and ql library versions
+       cd ~/local/codeql-workshops-staging/go/codeql-go-sqli/
 
-  6. Unzip the database.
+       ~/local/osx64-2.11.5/codeql/codeql --version
+       : CodeQL command-line toolchain release 2.11.5.
 
-  7. Import the unzipped database into Visual Studio Code:
-     - Click the *CodeQL* icon in the left sidebar.
-     - Place your mouse over *Databases*, and click the + sign that
-       appears on the right.
-     - Choose the unzipped database directory on your filesystem.
+       ~/local/osx64-2.11.5/codeql/codeql resolve languages
+       : ...
 
-  8. Create a new file, name it =SqlInjection.ql=, save it under
-     =vscode-codeql-starter/codeql-custom-queries-go/=.
+       ~/local/osx64-2.11.5/codeql/codeql resolve qlpacks
+       
+       cd ~/local/codeql-workshops-staging/go/codeql-go-sqli 
+       /Users/hohn/local/osx64-2.11.5/codeql/codeql pack install
+     #+END_SRC
+
+  4. Set up vscode to use the installed codeql version
+     #+BEGIN_SRC sh
+       open go-sqli.code-workspace
+       preferences > Code QL › Cli: Executable Path > /Users/hohn/local/osx64-2.11.5/codeql/codeql 
+     #+END_SRC
 
 * SQL injection example
   :PROPERTIES:
@@ -98,29 +107,34 @@
    We write codeql to identify these two, and then connect them via
    a  /taintflow configuration/, the general form of a /dataflow configuration/.
    
-** Build codeql database
-   To get started, build the codeql database (adjust paths to your setup):
+** (optional) a. Build codeql database
+   :PROPERTIES:
+   :ORDERED:  t
+   :END:
+   To get started, build the codeql database (adjust paths to your setup).
+   See
+   [[https://codeql.github.com/docs/codeql-cli/getting-started-with-the-codeql-cli/#setting-up-the-codeql-cli]]
+   for details.
+   
    #+BEGIN_SRC sh
-     # Choose consistent codeql and ql library versions
-     ~/local/vmsync/codeql263/codeql --version
-     : CodeQL command-line toolchain release 2.6.3.
-
-     cd ~/local/vmsync/codeql-go
-     git checkout codeql-cli/v2.6.3
-
      # Build the db with source commit id.
-     export PATH=$HOME/local/vmsync/codeql263:"$PATH"
-     SRCDIR=$HOME/local/codeql-training-material/go/codeql-go-sqli
+     export PATH=$HOME/local/osx64-2.11.5/codeql:"$PATH"
+     SRCDIR=$HOME/local/codeql-workshops-staging/go/codeql-go-sqli
      DB=$SRCDIR/go-sqli-$(cd $SRCDIR && git rev-parse --short HEAD)
 
      echo $DB
      test -d "$DB" && rm -fR "$DB"
      mkdir -p "$DB"
 
-     cd $SRCDIR && codeql database create --language=go -s . -j 8 -v $DB
+     cd $SRCDIR && make clean && codeql database create --language=go -s . -j 8 -v $DB
    #+END_SRC
 
    Then add this database directory to your VS Code =DATABASES= tab.
+
+** b. Use the included codeql database
+   Add the directory
+   : go-sqli-a9f3f19
+   VS Code =DATABASES= tab.
 
 ** Develop the query bottom-up
    1. Identify the /source/ part of the 
@@ -157,14 +171,14 @@
 
    The final query is in [[./SqlInjection.ql]]
 
-** Optional: sarif file review of the results
+** (optional): sarif file review of the results
    Query results are available in several output formats using the cli.  The
    following produces the sarif format, a json-based result description.
 
    #+BEGIN_SRC sh
      # The setup information from before
-     export PATH=$HOME/local/vmsync/codeql263:"$PATH"
-     SRCDIR=$HOME/local/codeql-training-material/go/codeql-go-sqli
+     export PATH=$HOME/local/osx64-2.11.5/codeql:"$PATH"
+     SRCDIR=$HOME/local/codeql-workshops-staging/go/codeql-go-sqli
      DB=$SRCDIR/go-sqli-$(cd $SRCDIR && git rev-parse --short HEAD)
 
      # Check paths
@@ -180,7 +194,7 @@
             --ram=14000                              \
             -j12                                     \
             --rerun                                  \
-            --search-path ~/local/vmsync/codeql-go   \
+            --search-path ~/local/codeql-workshops-staging/go/codeql-go-sqli  \
             --format=sarif-latest                    \
             --output go-sqli.sarif                   \
             --                                       \

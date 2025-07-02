@@ -5,7 +5,6 @@
  */
 
 import javascript
-import DataFlow::PathGraph
 
 class ReadFileSyncCall extends API::CallNode {
   ReadFileSyncCall() { this = API::moduleImport("fs").getMember("readFileSync").getACall() }
@@ -34,15 +33,13 @@ class ExecCall extends MethodCallExpr {
   ExecCall() { this.getMethodName() = "exec" }
 }
 
-class IdentifyFlowSink extends TaintTracking::Configuration {
-  IdentifyFlowSink() { this = "IdentifyFlowSink" }
-
-  override predicate isSource(DataFlow::Node nd) {
+module IdentifyFlowSink implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node nd) {
     //     const db = new sqlite3.Database(
     nd instanceof SqliteCall
   }
 
-  override predicate isSink(DataFlow::Node nd) {
+  predicate isSink(DataFlow::Node nd) {
     //     db.exec(query);
     exists(Expr db, ExecCall exec |
       db = exec.getReceiver() and
@@ -51,20 +48,23 @@ class IdentifyFlowSink extends TaintTracking::Configuration {
   }
 }
 
-class UltimateFlowCfg extends TaintTracking::Configuration {
-  UltimateFlowCfg() { this = "UltimateFlowCfg" }
+module UltimateFlowCfg implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node nd) { exists(ReadFileSyncCall r | nd = r) }
 
-  override predicate isSource(DataFlow::Node nd) { exists(ReadFileSyncCall r | nd = r) }
-
-  override predicate isSink(DataFlow::Node nd) { nd.asExpr() = uSink(_) }
+  predicate isSink(DataFlow::Node nd) { nd.asExpr() = uSink(_) }
 }
 
+import DataFlow::Global<IdentifyFlowSink> as IdentityFlow
+import TaintTracking::Global<UltimateFlowCfg> as UltimateFlow
+
+import UltimateFlow::PathGraph
+
 from
-  UltimateFlowCfg ucfg, DataFlow::PathNode usource, DataFlow::PathNode usink, IdentifyFlowSink cfg,
+  UltimateFlow::PathNode usource, UltimateFlow::PathNode usink,
   DataFlow::Node source, DataFlow::Node sink
 where
-  cfg.hasFlow(source, sink) and
-  ucfg.hasFlowPath(usource, usink) and
+  IdentityFlow::flow(source, sink) and
+  UltimateFlow::flowPath(usource, usink) and
   exists(ExecCall exec |
     sink.asExpr() = exec.getReceiver() and
     usink.getNode().asExpr() = exec.getAnArgument()

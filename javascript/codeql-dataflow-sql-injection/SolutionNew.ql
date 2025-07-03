@@ -5,18 +5,13 @@
  */
 
 import javascript
-import DataFlow::PathGraph
 
-/** 1. Source of the vulnerability. */ 
+/** 1. Source of the vulnerability. */
 class ReadFileSyncCall extends API::CallNode {
-  ReadFileSyncCall() { this =
-     API::moduleImport("fs")
-         .getMember("readFileSync")
-         .getACall() 
-  }
+  ReadFileSyncCall() { this = API::moduleImport("fs").getMember("readFileSync").getACall() }
 }
 
-/** 2. Sink of the vulnerability. */ 
+/** 2. Sink of the vulnerability. */
 class SqliteDatabaseInit extends DataFlow::SourceNode {
   SqliteDatabaseInit() {
     this =
@@ -39,16 +34,18 @@ DataFlow::SourceNode sqliteDatabaseInitGeneralized() {
   result = sqliteDatabaseInitGeneralized(DataFlow::TypeTracker::end())
 }
 
-class SqlInjectionConfiguration extends TaintTracking::Configuration {
-  SqlInjectionConfiguration() { this = "SQL Injection with SQLite3" }
+module SqlInjectionConfiguration implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof ReadFileSyncCall }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof ReadFileSyncCall }
-
-  override predicate isSink(DataFlow::Node sink) {
+  predicate isSink(DataFlow::Node sink) {
     sink = sqliteDatabaseInitGeneralized().getAMethodCall("exec")
   }
 }
 
-from SqlInjectionConfiguration config, DataFlow::PathNode start, DataFlow::PathNode end
-where config.hasFlowPath(start, end)
+module SqlInjectionConfigurationFlow = TaintTracking::Global<SqlInjectionConfiguration>;
+
+import SqlInjectionConfigurationFlow::PathGraph
+
+from SqlInjectionConfigurationFlow::PathNode start, SqlInjectionConfigurationFlow::PathNode end
+where SqlInjectionConfigurationFlow::flowPath(start, end)
 select end, start, end, "Sql injection from $@", start, "here"
